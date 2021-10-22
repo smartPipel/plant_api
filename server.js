@@ -16,6 +16,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 app.use(bodyParser.json());
+app.use('/uploads', express.static('./uploads'));
+
 
 // app.set('view engine', 'ejs');
 

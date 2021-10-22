@@ -67,9 +67,10 @@ const getAllPlant = (req, res, next) => {
             return res.json({
                 error: err
             })
-        } else return res.json(
+        } else return res.json({
+            message: 'success',
             data
-        )
+        })
     })
 
 }
@@ -83,7 +84,7 @@ const getPlantById = (req, res, next) => {
                 message: "Data doesn't exists"
             })
         } else return res.json({
-            message: 'Your data is here',
+            message: 'success',
             data
         })
     })
@@ -99,7 +100,7 @@ const deletePlant = (req, res, next) => {
                 message: "Data doesn't exists"
             })
         } else return res.json({
-            message: 'Delete data Succes',
+            message: 'seccess',
             data
         })
     })
@@ -111,6 +112,19 @@ const updatePlant = (req, res, next) => {
         message: "UPDATE PLANTS"
     })
 }
+const deleteAllPlant = (req, res, next) => {
+    Plant.deleteMany({}, err => {
+        if (err) {
+            return res.json({
+                message: 'Complete delete failed1'
+            })
+        } else {
+            return res.json({
+                message: 'Complete delete successful!'
+            })
+        }
+    });
+}
 const getPlantByType = (req, res, next) => {
     Plant.find({
         plantType: req.params.plantType
@@ -120,7 +134,7 @@ const getPlantByType = (req, res, next) => {
                 message: "Data doesn't exists"
             })
         } else return res.json({
-            message: 'Your data is here',
+            message: 'success',
             data
         })
     })
@@ -134,5 +148,6 @@ module.exports = {
     getPlantById,
     updatePlant,
     getPlantByType,
-    uploadImage
+    uploadImage,
+    deleteAllPlant
 };
