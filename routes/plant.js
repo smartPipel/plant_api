@@ -8,7 +8,7 @@ router.post('/', plantControllers.uploadImage, plantControllers.newPlant);
 // GET Routes
 router.get('/', plantControllers.getAllPlant);
 router.get('/id=:id', plantControllers.getPlantById);
-router.get('/type/plant-type=:plantType', plantControllers.getPlantByType);
+router.get('/plant-type=:plantType', plantControllers.getPlantByType);
 
 // PATCH Routes
 router.patch('/', plantControllers.updatePlant);
