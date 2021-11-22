@@ -5,6 +5,7 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const path = require('path');
 const plantRoutes = require('./routes/plant')
+const cors = require('cors');
 require('dotenv/config');
 
 mongoose.connect(`${process.env.MONGODB_URI}`, {
@@ -15,6 +16,7 @@ mongoose.connect(`${process.env.MONGODB_URI}`, {
 app.use(bodyParser.urlencoded({
     extended: true
 }))
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/uploads', express.static('./uploads'));
 

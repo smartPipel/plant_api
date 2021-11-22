@@ -1,7 +1,7 @@
 const Plant = require('../models/plant');
-const mutler = require('multer');
+const multer = require('multer');
 
-const storage = mutler.diskStorage({
+const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './uploads')
     },
@@ -10,7 +10,7 @@ const storage = mutler.diskStorage({
     }
 });
 
-const uploadImage = mutler({
+const uploadImage = multer({
     storage: storage
 }).single('image')
 
@@ -33,9 +33,10 @@ const newPlant = (req, res, next) => {
                 })
                 newPlant.save((err, data) => {
                     return res.json(err ? {
+                        success: false,
                         error: err
                     } : {
-                        status: "success",
+                        success: true,
                         data
                     })
 
@@ -43,8 +44,10 @@ const newPlant = (req, res, next) => {
                 })
             } else {
                 return res.json(err ? {
-                    message: `Something went wrong, please try agein. ${err}`
+                    success: false,
+                    message: `Something went wrong, please try again. ${err}`
                 } : {
+                    success: false,
                     message: 'Plant already exists'
                 })
 
@@ -53,6 +56,7 @@ const newPlant = (req, res, next) => {
     } catch (error) {
         console.log(error)
         return res.json({
+            success: false,
             message: error
         })
     }
@@ -65,10 +69,12 @@ const getAllPlant = (req, res, next) => {
     Plant.find({}, (err, data) => {
         if (err) {
             return res.json({
+                success: false,
                 error: err
             })
         } else return res.json({
-            message: 'success',
+            dataLength: data.length,
+            success: true,
             data
         })
     })
@@ -81,10 +87,11 @@ const getPlantById = (req, res, next) => {
     }, (err, data) => {
         if (err || !data) {
             return res.json({
+                success: false,
                 message: "Data doesn't exists"
             })
         } else return res.json({
-            message: 'success',
+            success: true,
             data
         })
     })
@@ -97,10 +104,11 @@ const deletePlant = (req, res, next) => {
     }, (err, data) => {
         if (err || !data) {
             return res.json({
+                success: false,
                 message: "Data doesn't exists"
             })
         } else return res.json({
-            message: 'seccess',
+            success: true,
             data
         })
     })
@@ -116,10 +124,12 @@ const deleteAllPlant = (req, res, next) => {
     Plant.deleteMany({}, err => {
         if (err) {
             return res.json({
-                message: 'Complete delete failed1'
+                success: false,
+                message: 'Complete delete failed!'
             })
         } else {
             return res.json({
+                success: true,
                 message: 'Complete delete successful!'
             })
         }
@@ -131,10 +141,11 @@ const getPlantByType = (req, res, next) => {
     }, (err, data) => {
         if (err || !data) {
             return res.json({
+                success: false,
                 message: "Data doesn't exists"
             })
         } else return res.json({
-            message: 'success',
+            success: true,
             data
         })
     })

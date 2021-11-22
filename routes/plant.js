@@ -7,14 +7,14 @@ router.post('/', plantControllers.uploadImage, plantControllers.newPlant);
 
 // GET Routes
 router.get('/', plantControllers.getAllPlant);
-router.get('/:id', plantControllers.getPlantById);
-router.get('/type/:plantType', plantControllers.getPlantByType);
+router.get('/id=:id', plantControllers.getPlantById);
+router.get('/type/plant-type=:plantType', plantControllers.getPlantByType);
 
 // PATCH Routes
 router.patch('/', plantControllers.updatePlant);
 
 // DELETE Routes
-router.delete('/:id', plantControllers.deletePlant);
+router.delete('/id=:id', plantControllers.deletePlant);
 router.delete('/', plantControllers.deleteAllPlant);
 
 
