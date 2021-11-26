@@ -1,6 +1,7 @@
 const Plant = require('../models/plant');
 const multer = require('multer');
 const db = require('../databases/db');
+const e = require('express');
 
 
 const storage = multer.diskStorage({
@@ -103,18 +104,34 @@ const newPlant = (req, res, next) => {
 }
 
 const getAllPlant = (req, res, next) => {
-    db.plants.find({}, (err, data) => {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
+    try {
+
+        db.plants.find({}, (err, data) => {
+            console.log('data:\n')
+
+            console.table(data.map((e) => [
+                e._id.toString(),
+                e.plantName
+            ]))
+
+
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: err.message
+                })
+            } else return res.json({
+                dataLength: data.length,
+                success: true,
+                data
             })
-        } else return res.json({
-            dataLength: data.length,
-            success: true,
-            data
         })
-    })
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: error.message
+        })
+    }
 
 }
 
