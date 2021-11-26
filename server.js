@@ -4,8 +4,8 @@ const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const path = require('path');
-const plantRoutes = require('./routes/plant')
-const homeRoutes = require('./routes/home')
+const plantRoutes = require('./routes/plant.routes')
+const homeRoutes = require('./routes/home.routes')
 const cors = require('cors');
 require('dotenv/config');
 
@@ -43,8 +43,7 @@ app.use((err, req, res, next) => {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
-      ">
+        transform: translate(-50%, -50%);">
                 <h1>| 404 Not Found |</h1>
         </div>`);
     } else {
