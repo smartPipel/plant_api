@@ -36,6 +36,7 @@ const newPlant = (req, res, next) => {
                         success: false,
                         error: err
                     } : {
+                        dataLength: data.length,
                         success: true,
                         data
                     })
@@ -91,6 +92,7 @@ const getPlantById = (req, res, next) => {
                 message: "Data doesn't exists"
             })
         } else return res.json({
+            dataLength: data.length,
             success: true,
             data
         })
@@ -108,6 +110,7 @@ const deletePlant = (req, res, next) => {
                 message: "Data doesn't exists"
             })
         } else return res.json({
+            dataLength: data.length,
             success: true,
             data
         })
@@ -139,15 +142,18 @@ const getPlantByType = (req, res, next) => {
     Plant.find({
         plantType: req.params.plantType
     }, (err, data) => {
-        if (err || !data) {
+        if (err || data.length === 0) {
             return res.json({
                 success: false,
                 message: "Data doesn't exists"
             })
-        } else return res.json({
-            success: true,
-            data
-        })
+        } else {
+            return res.json({
+                dataLength: data.length,
+                success: true,
+                data
+            })
+        }
     })
 }
 

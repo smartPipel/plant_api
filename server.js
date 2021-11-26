@@ -20,10 +20,12 @@ app.use(bodyParser.urlencoded({
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/uploads', express.static('./uploads'));
+app.use('/doc', express.static('./doc'));
+app.use(express.static('doc'));
+
 
 
 // app.set('view engine', 'ejs');
-
 
 
 app.use('/api/plant', plantRoutes)
