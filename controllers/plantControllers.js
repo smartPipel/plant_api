@@ -1,5 +1,7 @@
 const Plant = require('../models/plant');
 const multer = require('multer');
+const db = require('../databases/db');
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -14,12 +16,46 @@ const uploadImage = multer({
     storage: storage
 }).single('image')
 
+const search = (req, res, next) => {
+    try {
+
+        db.plants.find({
+            $text: {
+                $search: req.params.search,
+                $caseSensitive: false
+            }
+        }, ).then((data) => {
+            if (data) {
+                return res.json({
+                    dataLength: data.length,
+                    success: data == 0 ? false : true,
+                    data
+                })
+            }
+
+        }).catch((err) => {
+            return res.json({
+                // dataLength: data.length,
+                success: false,
+                error: err.message
+            })
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.json({
+            dataLength: data.length,
+            success: false,
+            message: "error"
+        })
+    }
+}
 
 const newPlant = (req, res, next) => {
 
     try {
 
-        const plant = Plant.findOne({
+        db.plants.findOne({
             plantName: req.body.plantName
         }, (err, data) => {
             if (!data) {
@@ -67,7 +103,7 @@ const newPlant = (req, res, next) => {
 }
 
 const getAllPlant = (req, res, next) => {
-    Plant.find({}, (err, data) => {
+    db.plants.find({}, (err, data) => {
         if (err) {
             return res.json({
                 success: false,
@@ -83,7 +119,7 @@ const getAllPlant = (req, res, next) => {
 }
 
 const getPlantById = (req, res, next) => {
-    Plant.findOne({
+    db.plants.findOne({
         _id: req.params.id
     }, (err, data) => {
         if (err || !data) {
@@ -101,7 +137,7 @@ const getPlantById = (req, res, next) => {
 }
 
 const deletePlant = (req, res, next) => {
-    Plant.deleteOne({
+    db.plants.deleteOne({
         _id: req.params.id
     }, (err, data) => {
         if (err || !data) {
@@ -119,12 +155,34 @@ const deletePlant = (req, res, next) => {
 }
 
 const updatePlant = (req, res, next) => {
-    res.json({
-        message: "UPDATE PLANTS"
+    const idCheck = db.plants.findById(req.params.id);
+
+    if (!idCheck) return res.status(404).json({
+        "message": "Data not found"
     })
+    try {
+        const {
+            body
+        } = req.body;
+        db.plants.updateOne({
+            _id: req.params.id
+        }, {
+            $set: body
+        }).then((data) => {
+            res.status(200).json({
+                success: true,
+                data
+            })
+        })
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        })
+    }
 }
 const deleteAllPlant = (req, res, next) => {
-    Plant.deleteMany({}, err => {
+    db.plants.deleteMany({}, err => {
         if (err) {
             return res.json({
                 success: false,
@@ -166,5 +224,6 @@ module.exports = {
     updatePlant,
     getPlantByType,
     uploadImage,
-    deleteAllPlant
+    deleteAllPlant,
+    search
 };

@@ -7,12 +7,19 @@ const path = require('path');
 const plantRoutes = require('./routes/plant.routes')
 const homeRoutes = require('./routes/home.routes')
 const cors = require('cors');
+const db = require('./databases/db');
 require('dotenv/config');
+// const db;
 
-mongoose.connect(`${process.env.MONGODB_URI}`, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-}, (err) => err ? console.log('error: ' + err) : console.log('Connected to db!'))
+db.mongoose.connect(db.url, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    },
+
+    (err) => {
+        err ? console.log('error: ' + err) : console.log('Connected to db!');
+    }
+)
 
 app.use(bodyParser.urlencoded({
     extended: true
