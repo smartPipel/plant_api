@@ -105,7 +105,6 @@
  * @apiGroup Plant
  * @apiVersion 0.1.0
  * 
- * @apiBody {String} _id Id dari tanaman.
  * @apiBody {String} plantName  Nama tanaman.
  * @apiBody {String} descriptions  Deskripsi dari tanaman.
  * @apiBody {String} plantType  Tipe tanaman.
