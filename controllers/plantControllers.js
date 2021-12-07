@@ -1,7 +1,7 @@
 const Plant = require('../models/plant');
 const multer = require('multer');
 const db = require('../databases/db');
-const e = require('express');
+
 
 
 const storage = multer.diskStorage({
@@ -69,6 +69,17 @@ const newPlant = (req, res, next) => {
 
                 })
                 newPlant.save((err, data) => {
+                    let i = data.map((e, index) => {
+                        return {
+                            id: e._id.toString(),
+                            plantName: e.plantName,
+                            plantType: e.plantType,
+                            latinName: e.latinName,
+                            imageUrl: 'http://localhost:3000/' + e.image
+                        }
+                    }, );
+
+                    console.table(i);
                     return res.json(err ? {
                         success: false,
                         error: err
@@ -107,13 +118,17 @@ const getAllPlant = (req, res, next) => {
     try {
 
         db.plants.find({}, (err, data) => {
-            console.log('data:\n')
+            let i = data.map((e, index) => {
+                return {
+                    id: e._id.toString(),
+                    plantName: e.plantName,
+                    plantType: e.plantType,
+                    latinName: e.latinName,
+                    imageUrl: 'http://localhost:3000/' + e.image
+                }
+            }, );
 
-            console.table(data.map((e) => [
-                e._id.toString(),
-                e.plantName
-            ]))
-
+            console.table(i);
 
             if (err) {
                 return res.json({
@@ -144,11 +159,24 @@ const getPlantById = (req, res, next) => {
                 success: false,
                 message: "Data doesn't exists"
             })
-        } else return res.json({
-            dataLength: data.length,
-            success: true,
-            data
-        })
+        } else {
+            let i = data.map((e, index) => {
+                return {
+                    id: e._id.toString(),
+                    plantName: e.plantName,
+                    plantType: e.plantType,
+                    latinName: e.latinName,
+                    imageUrl: 'http://localhost:3000/' + e.image
+                }
+            }, );
+
+            console.table(i);
+            return res.json({
+                dataLength: data.length,
+                success: true,
+                data
+            })
+        }
     })
 
 }
@@ -162,11 +190,24 @@ const deletePlant = (req, res, next) => {
                 success: false,
                 message: "Data doesn't exists"
             })
-        } else return res.json({
-            dataLength: data.length,
-            success: true,
-            data
-        })
+        } else {
+            let i = data.map((e, index) => {
+                return {
+                    id: e._id.toString(),
+                    plantName: e.plantName,
+                    plantType: e.plantType,
+                    latinName: e.latinName,
+                    imageUrl: 'http://localhost:3000/' + e.image
+                }
+            }, );
+
+            console.table(i);
+            return res.json({
+                dataLength: data.length,
+                success: true,
+                data
+            })
+        }
     })
 
 }
